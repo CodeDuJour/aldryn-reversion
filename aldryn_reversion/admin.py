@@ -17,8 +17,8 @@ from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _
 
 from cms.admin.placeholderadmin import PlaceholderAdminMixin
 from reversion import VERSION as REVERSION_VERSION
@@ -68,7 +68,7 @@ class VersionedPlaceholderAdminMixin(PlaceholderAdminMixin, VersionAdmin):
         """
         Returns a dict with plugin info (to use in comment for revision)
         """
-        return {'plugin_id': plugin.id, 'plugin': force_text(plugin)}
+        return {'plugin_id': plugin.id, 'plugin': force_str(plugin)}
 
     def _create_aldryn_revision(self, target, user=None,
                                 comment=None, source=None):
@@ -254,7 +254,7 @@ class VersionedPlaceholderAdminMixin(PlaceholderAdminMixin, VersionAdmin):
 
         obj = get_object_or_404(self.model, pk=unquote(object_id))
         version = get_object_or_404(Version, pk=unquote(version_id),
-                                    object_id=force_text(obj.pk))
+                                    object_id=force_str(obj.pk))
         revision = version.revision
 
         if request.method == "POST":
@@ -267,8 +267,8 @@ class VersionedPlaceholderAdminMixin(PlaceholderAdminMixin, VersionAdmin):
             preserved_filters = self.get_preserved_filters(request)
 
             msg_dict = {
-                'name': force_text(opts.verbose_name),
-                'obj': force_text(obj)
+                'name': force_str(opts.verbose_name),
+                'obj': force_str(obj)
             }
             msg = _('The %(name)s "%(obj)s" was successfully reverted. '
                     'You may edit it again below.') % msg_dict
@@ -291,7 +291,7 @@ class VersionedPlaceholderAdminMixin(PlaceholderAdminMixin, VersionAdmin):
                 'revision_date': revision.date_created,
                 'versions': revision.version_set.order_by(
                     'content_type__model', 'object_id_int').all,
-                'object_name': force_text(self.model._meta.verbose_name),
+                'object_name': force_str(self.model._meta.verbose_name),
                 'app_label': self.model._meta.app_label,
                 'opts': self.model._meta,
                 'add': False,
@@ -377,8 +377,8 @@ class VersionedPlaceholderAdminMixin(PlaceholderAdminMixin, VersionAdmin):
                 preserved_filters = self.get_preserved_filters(request)
 
                 msg_dict = {
-                    'name': force_text(opts.verbose_name),
-                    'obj': force_text(obj)
+                    'name': force_str(opts.verbose_name),
+                    'obj': force_str(obj)
                 }
                 msg = _('The %(name)s "%(obj)s" was successfully recovered. '
                         'You may edit it again below.') % msg_dict
@@ -409,7 +409,7 @@ class VersionedPlaceholderAdminMixin(PlaceholderAdminMixin, VersionAdmin):
             'placeholders_to_restore': object_placeholders,
             'versions': revision.version_set.order_by(
                 'content_type__name', 'object_id_int').all,
-            'object_name': force_text(self.model._meta.verbose_name),
+            'object_name': force_str(self.model._meta.verbose_name),
             'app_label': self.model._meta.app_label,
             'opts': self.model._meta,
             'add': False,

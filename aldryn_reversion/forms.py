@@ -2,8 +2,8 @@ from django.core.exceptions import ValidationError
 from django.forms import forms
 from django.forms.fields import MultipleChoiceField
 from django.forms.widgets import CheckboxSelectMultiple
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _
 
 from .utils import (
     get_translations_versions_for_object, get_conflict_fks_versions,
@@ -34,7 +34,7 @@ class RecoverObjectWithTranslationForm(forms.Form):
             translation_versions = get_translations_versions_for_object(
                 self.obj, self.revision, versions)
             # update form
-            choices = [(translation_version.pk, force_text(translation_version))
+            choices = [(translation_version.pk, force_str(translation_version))
                        for translation_version in translation_versions]
             self.fields['translations'].choices = choices
         else:

@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.fields.related import ForeignKey
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _
 
 from reversion.revisions import default_revision_manager
 
@@ -38,8 +38,8 @@ def build_obj_repr(obj):
     """
     Returns a unicode string of object Model name and its text representation.
     """
-    return "{0}: '{1}'".format(force_text(obj._meta.model.__name__),
-                               force_text(obj))
+    return "{0}: '{1}'".format(force_str(obj._meta.model.__name__),
+                               force_str(obj))
 
 
 def get_translation_info_message(obj):
