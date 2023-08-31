@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.urls import reverse, NoReverseMatch
 from django.contrib import messages
 try:
     from django.contrib.admin.utils import unquote
